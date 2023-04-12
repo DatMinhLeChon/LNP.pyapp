@@ -18,3 +18,4 @@ class Model:
     def visualize(self):
         opt = self.linearProgramming()
     
+# python3 logical_fucntion\linalg_numpy.py

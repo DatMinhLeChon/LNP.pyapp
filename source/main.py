@@ -57,7 +57,7 @@ class Example(Frame): # main frame
         self.initUI()
     
     def initUI(self):
-        self.parent.title("LP Computing")
+        self.parent.title("LNP Computing")
         self.pack(fill=BOTH, expand=True)
         
         # Main uI 
