@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import messagebox
 import tksheet
 
+#configuration 
+
 class ConfigureFrame(Frame):
     def __init__(self, parent): 
         Frame.__init__(self, parent)
