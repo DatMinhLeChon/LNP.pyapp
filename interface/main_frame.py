@@ -1,6 +1,18 @@
 from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
+from configure_frame import ConfigureFrame
+from module.public_val import *
+import tksheet
+
+def configurationFrameOpen():
+    global state_in_root_temp
+    global signal_loop
+    signal_loop = 1
+    root_temp= Tk()
+    root_temp.geometry("400x80+300+300")
+    app_temp = ConfigureFrame(root_temp)
+    root_temp.mainloop()
 
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
@@ -28,5 +40,15 @@ class MainFrame(Frame): # main frame
         txt = Text(frame_main2, bg ="#fcfcfc", height= 2)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
     
-        Button_tab1_4 = Button(frame_main1, text="Linear Programming", width =10, )
+        Button_tab1_4 = Button(frame_main1, text="Linear Programming", width =20, command= configurationFrameOpen )
         Button_tab1_4.pack(side=LEFT, padx=5, pady=5)
+    
+    
+        
+if __name__ =="__main__":
+    root = Tk()
+    root.geometry('1200x600+200+200') 
+    app= MainFrame(root)
+    root.mainloop()
+
+# python interface\main_frame.py
