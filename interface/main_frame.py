@@ -2,7 +2,7 @@ from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
 from interface.configure_frame import ConfigureFrame
-from module.public_val import *
+from interface.public_val import *
 import tksheet
 import sys
 
@@ -11,7 +11,7 @@ def configurationFrameOpen():
     global signal_loop
     signal_loop = 1
     root_temp= Tk()
-    root_temp.geometry("400x80+300+300")
+    root_temp.geometry("300x350+300+300")
     app_temp = ConfigureFrame(root_temp)
     root_temp.mainloop()
 
