@@ -2,10 +2,8 @@ from functools import partial
 from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
-from interface.main_frame import MainFrame
-from interface.dataset_frame import DatasetFrame
-from interface.configure_frame import ConfigureFrame
-import sys
+from interface.main_frame import *
+from module import *
 
 #def trigger(sheet_temp):
     #for i in range(sheet_temp.get_total_rows()):
@@ -32,15 +30,7 @@ def clickExitRootTemp(): # exit button fucnton in auto frame
     global signal_loop
     state_in_root_temp = 'end'
     signal_loop = 0
-    
-def clickedFrameDataset(): # init auto frame by click button
-    global state_in_root_temp
-    global signal_loop
-    signal_loop = 1
-    root_temp= Tk()
-    root_temp.geometry("400x80+300+300")
-    app_temp = DatasetFrame(root_temp)
-    root_temp.mainloop()
+
     
 def viewModelTable(linear_programming, sheet):
             df = linear_programming.dataFrame()
@@ -51,9 +41,6 @@ def viewModelTable(linear_programming, sheet):
                 verify = False,\
                 reset_highlights = False)
 
-def datasetApply(method_name, lhs_ineq, rhs_ineq, bnd):
-    linear_programming = scipy_script.Model(method_name, lhs_ineq, rhs_ineq, bnd)
-    return linear_programming
 
 ##Running 2+ funtion in event
 def sequence(*functions):
@@ -64,10 +51,11 @@ def sequence(*functions):
         return return_value
     return func
 
-if __name__ == "__main__" :
+if __name__ =="__main__":
     root = Tk()
     root.geometry('1200x600+200+200') 
     app= MainFrame(root)
     root.mainloop()
 
-#  python interface\main.py
+
+#  python main.py

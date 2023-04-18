@@ -1,9 +1,10 @@
 from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
-from configure_frame import ConfigureFrame
+from interface.configure_frame import ConfigureFrame
 from module.public_val import *
 import tksheet
+import sys
 
 def configurationFrameOpen():
     global state_in_root_temp
