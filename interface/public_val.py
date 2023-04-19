@@ -1,3 +1,5 @@
+from tkinter import *
+
 public_number_const = 2
 public_number_val = 2 
 
@@ -11,8 +13,9 @@ public_rhs_eq = {}
 
 public_method = ''
 public_bnd = ''
+values = {"Maximize" : 1, "Minimize" : 0}
 
-root = None # global variable Frame
+root_main = None # global variable Frame
 root_temp = None # global variable Frame 
 
 signal_loop = 1

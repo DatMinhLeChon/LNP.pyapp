@@ -3,11 +3,17 @@ from tkinter import *
 from tkinter import messagebox
 from interface.configure_frame import ConfigureFrame
 from interface.public_val import *
+import interface.public_val
 import tksheet
 import pandas as pd
 import numpy.matlib
 import numpy as np
-from functools import partial
+from functools import partial, update_wrapper
+
+def wrapped_partial(func, *args, **kwargs):
+    partial_func = partial(func, *args, **kwargs)
+    update_wrapper(partial_func, func)
+    return partial_func
 
 #def trigger(sheet_temp):
     #for i in range(sheet_temp.get_total_rows()):
@@ -19,45 +25,53 @@ from functools import partial
 
 ##_________button click in user interface main____thread & subprocess design 
     
-def viewModelTable(sheet):
-    global public_number_const
-    global public_number_val
-    temp_list = []
-    temp_list.append('')
-    for index in range(1, public_number_val+1):
-        temp_list.append(''.join(['x',str(index)]))
-    temp_list.append('Sign')
-    temp_list.append('Right side')
-    df = pd.DataFrame(np.matlib.empty((public_number_const, public_number_val+3)), columns = temp_list)
-    sheet.set_sheet_data(data = df.values.tolist(),\
-                reset_col_positions = True,\
-                reset_row_positions = True,\
-                redraw = True,\
-                verify = False,\
-                reset_highlights = False)
-
-def startLoop(sheet):
-    global signal_loop
-    if signal_loop == 1:
-        root.after(1000,startLoop)
-    else:
-        viewModelTable(sheet)
-
-def configurationFrameOpen(sheet):
-    global signal_loop
-    global root_temp
-    signal_loop = 1
-    root_temp= Tk()
-    root_temp.geometry("300x350+300+300")
-    app_temp = ConfigureFrame(root_temp)
-    startLoop(sheet)
-    root_temp.mainloop()
 
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
         Frame.__init__(self, parent)
         self.parent = parent
         self.initUI()
+    
+    def viewModelTable(self, sheet):
+        temp_list = []
+        temp_list.append('RN')
+        for index in range(1, int(interface.public_val.public_number_val)+1):
+            temp_list.append(''.join(['x',str(index)]))
+        temp_list.append('Sign')
+        temp_list.append('Right side')
+        print(temp_list)
+        try:
+            df = pd.DataFrame(np.matlib.empty((int(interface.public_val.public_number_const), int(interface.public_val.public_number_val)+3)), columns = temp_list)
+            sheet.set_sheet_data(data = df.values.tolist(),\
+                        reset_col_positions = True,\
+                        reset_row_positions = True,\
+                        redraw = True,\
+                        verify = False,\
+                        reset_highlights = False,\
+                        )
+        except:
+            print('sheet error 1')
+        
+        for index1 in range(temp_list.index(temp_list[-1]) + 1):
+            try :
+                sheet.headers()[index1]= temp_list[index1]
+            except: 
+                pass
+            
+            
+    def startLoop(self, sheet):
+        if interface.public_val.signal_loop == 1:
+            self.parent.after(3000, wrapped_partial(self.startLoop,sheet))
+        else:
+            self.viewModelTable(sheet)
+            
+    def configurationFrameOpen(self,sheet):
+        interface.public_val.signal_loop = 1
+        root_temp= Tk()
+        root_temp.geometry("300x350+300+300")
+        app_temp = ConfigureFrame(root_temp)
+        self.startLoop(sheet)
+        root_temp.mainloop()
         
     def initUI(self):
         self.parent.title("LNP Computing")
@@ -79,12 +93,10 @@ class MainFrame(Frame): # main frame
         txt = Text(frame_main1, bg ="#fcfcfc", height= 2)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
     
-        Button_tab1_1 = Button(frame_main1, text="Linear Programming", width =20, command= partial(configurationFrameOpen, sheet1) )
+        Button_tab1_1 = Button(frame_main1, text="Linear Programming", width =20, command= partial(self.configurationFrameOpen, sheet1) )
         Button_tab1_1.pack(side=LEFT, padx=5, pady=5)
         Button_tab1_2 = Button(frame_main1, text="RUN", width =20)
         Button_tab1_2.pack(side=RIGHT, padx=5, pady=5)
-    
-    
         
 if __name__ =="__main__":
     root = Tk()

@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 from interface.main_frame import *
 from module import *
+from interface.public_val import root_main
 
 
 ##Running 2+ funtion in event
@@ -16,10 +17,10 @@ def sequence(*functions):
     return func
 
 if __name__ =="__main__":
-    root = Tk()
-    root.geometry('1200x600+200+200') 
-    app= MainFrame(root)
-    root.mainloop()
+    root_main = Tk()
+    root_main.geometry('1200x600+200+200') 
+    app = MainFrame(root_main)
+    root_main.mainloop()
 
 
 #  python main.py
