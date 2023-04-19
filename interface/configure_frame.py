@@ -7,21 +7,29 @@ from functools import partial
 #configuration 
 values = {"Maximize" : 1, "Minimize" : 0}
 
-class ConfigureFrame(Frame):
-    def __init__(self, parent): 
-        Frame.__init__(self, parent)
-        self.parent = parent
-        self.initUI()
-        
-    def applyConfigureData(self, spin_constraints, spin_variables):
+def sequence(*functions):
+    def func(*args, **kwargs):
+        return_value = None
+        for function in functions:
+            return_value = function(*args, **kwargs)
+        return return_value
+    return func
+
+def applyConfigureData(root_temp, spin_constraints, spin_variables):
         global public_number_const
         global public_number_val
         try:
             public_number_const = spin_constraints.get()
             public_number_val = spin_variables.get()
+            root_temp.destroy()
         except:
             return IndexError
-        
+
+class ConfigureFrame(Frame):
+    def __init__(self, parent): 
+        Frame.__init__(self, parent)
+        self.parent = parent
+        self.initUI()
         
     def initUI(self):
         global objective_type
@@ -60,10 +68,10 @@ class ConfigureFrame(Frame):
         for (text, value) in values.items():
             Radiobutton(label_frame, value = value, variable = objective_type, text = text).pack(side = TOP)
 
-        Button2 = Button(frame3, text="Ok", width =10, command = partial(self.applyConfigureData, spin_constraint, spin_variable))
+        Button2 = Button(frame3, text="OK", width =10, command = partial(applyConfigureData, root_temp, spin_constraint, spin_variable))
         Button2.pack(side = RIGHT, padx=20, pady =5)
         
-        
+
 if __name__ =="__main__":
     root = Tk()
     root.geometry('300x350+200+200') 
