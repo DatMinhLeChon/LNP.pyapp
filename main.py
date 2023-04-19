@@ -5,42 +5,6 @@ from tkinter import messagebox
 from interface.main_frame import *
 from module import *
 
-#def trigger(sheet_temp):
-    #for i in range(sheet_temp.get_total_rows()):
-        #if compare_string(sheet_temp.get_cell_data(i, 3, return_copy = True), \
-        #sheet_temp.get_cell_data(i, 7,  return_copy = True), sheet_temp.get_cell_data(i, 4,  return_copy = True)) == 0:
-            #sheet_temp.highlight_cells(row = i, column = 7, bg = "Red", fg = None, redraw = False, overwrite = True)
-    # get_cell_data(r, c, return_copy = True)
-    # highlight_cells(row = 0, column = 0, cells = [], canvas = "table", bg = None, fg = None, redraw = False, overwrite = True)
-
-##_________button click in user interface main____thread & subprocess design 
-def temp_click(txt): 
-    txt.insert('1.0', "process successful ")
-
-
-def clickRunRootTemp(): # env static val processing for auto loop
-    global state_in_root_temp
-    global signal_loop
-    state_in_root_temp = 'run'
-    signal_loop = 1
-    messagebox.showinfo(title= "Message", message="Start auto")
-
-def clickExitRootTemp(): # exit button fucnton in auto frame
-    global state_in_root_temp
-    global signal_loop
-    state_in_root_temp = 'end'
-    signal_loop = 0
-
-    
-def viewModelTable(linear_programming, sheet):
-            df = linear_programming.dataFrame()
-            sheet.set_sheet_data(data = df.values.tolist(),\
-                reset_col_positions = True,\
-                reset_row_positions = True,\
-                redraw = True,\
-                verify = False,\
-                reset_highlights = False)
-
 
 ##Running 2+ funtion in event
 def sequence(*functions):
