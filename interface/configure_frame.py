@@ -19,6 +19,7 @@ class ConfigureFrame(Frame):
         try:
             public_number_const = spin_constraints.get()
             public_number_val = spin_variables.get()
+            self.parent.destroy()
         except:
             return IndexError
         
