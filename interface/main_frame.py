@@ -7,6 +7,7 @@ import tksheet
 import pandas as pd
 import numpy.matlib
 import numpy as np
+from functools import partial
 
 #def trigger(sheet_temp):
     #for i in range(sheet_temp.get_total_rows()):
@@ -35,14 +36,21 @@ def viewModelTable(sheet):
                 verify = False,\
                 reset_highlights = False)
 
-def configurationFrameOpen():
-    global state_in_root_temp
+def startLoop(sheet):
+    global signal_loop
+    if signal_loop == 1:
+        root.after(1000,startLoop)
+    else:
+        viewModelTable(sheet)
+
+def configurationFrameOpen(sheet):
     global signal_loop
     global root_temp
     signal_loop = 1
     root_temp= Tk()
     root_temp.geometry("300x350+300+300")
     app_temp = ConfigureFrame(root_temp)
+    startLoop(sheet)
     root_temp.mainloop()
 
 class MainFrame(Frame): # main frame
@@ -68,11 +76,13 @@ class MainFrame(Frame): # main frame
         sheet1.grid(row =20, column = 20,sticky="nswe")
         sheet1.enable_bindings()
         
-        txt = Text(frame_main2, bg ="#fcfcfc", height= 2)
+        txt = Text(frame_main1, bg ="#fcfcfc", height= 2)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
     
-        Button_tab1_4 = Button(frame_main1, text="Linear Programming", width =20, command= configurationFrameOpen )
-        Button_tab1_4.pack(side=LEFT, padx=5, pady=5)
+        Button_tab1_1 = Button(frame_main1, text="Linear Programming", width =20, command= partial(configurationFrameOpen, sheet1) )
+        Button_tab1_1.pack(side=LEFT, padx=5, pady=5)
+        Button_tab1_2 = Button(frame_main1, text="RUN", width =20)
+        Button_tab1_2.pack(side=RIGHT, padx=5, pady=5)
     
     
         

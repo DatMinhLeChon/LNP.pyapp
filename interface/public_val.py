@@ -14,3 +14,5 @@ public_bnd = ''
 
 root = None # global variable Frame
 root_temp = None # global variable Frame 
+
+signal_loop = 1

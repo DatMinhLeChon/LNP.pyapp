@@ -17,9 +17,11 @@ class ConfigureFrame(Frame):
     def applyConfigureData(self, spin_constraints, spin_variables):
         global public_number_const
         global public_number_val
+        global signal_loop
         try:
             public_number_const = spin_constraints.get()
             public_number_val = spin_variables.get()
+            signal_loop = 0
             self.parent.destroy()
         except:
             return IndexError
