@@ -4,16 +4,20 @@ from tkinter import messagebox
 from interface.configure_frame import ConfigureFrame
 from interface.public_val import *
 import tksheet
-import sys
 
 def configurationFrameOpen():
     global state_in_root_temp
     global signal_loop
+    global root_temp
     signal_loop = 1
     root_temp= Tk()
     root_temp.geometry("300x350+300+300")
     app_temp = ConfigureFrame(root_temp)
     root_temp.mainloop()
+
+def buttonExit():
+    global root_temp
+    root_temp.destroy()
 
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
