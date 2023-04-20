@@ -1,6 +1,14 @@
 # linear_programing.pyapp
 python application development
-# documentation link: scipy
-
+*stack
+- tkinter
+- tksheet
+- scipy
+- pandas
+- numpy
+# documentation:
+- scipy
+- link: https://docs.scipy.org/doc//scipy/index.html
 # run
-run this command in LNP.pyapp project : python main.py
+run this command in LNP.pyapp project : 
+python main.py
