@@ -2,4 +2,5 @@
 python application development
 # documentation link: scipy
 
-# python main.py
+# run
+run this command in LNP.pyapp project : python main.py
