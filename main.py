@@ -3,7 +3,7 @@ from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
 from interface.main_frame import *
-from module import *
+from model import *
 from interface.public_val import root_main
 
 

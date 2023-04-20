@@ -1,7 +1,3 @@
-"""
-~Mathematical Programming~
-Simplex implementation.
-"""
 
 import numpy as np
 from numpy.linalg import inv  # Matrix inverse

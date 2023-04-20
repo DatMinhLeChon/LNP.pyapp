@@ -10,7 +10,7 @@ import numpy.matlib
 import numpy as np
 from functools import partial, update_wrapper
 
-def wrapped_partial(func, *args, **kwargs):
+def wrappedPartial(func, *args, **kwargs):
     partial_func = partial(func, *args, **kwargs)
     update_wrapper(partial_func, func)
     return partial_func
@@ -22,14 +22,13 @@ class MainFrame(Frame): # main frame
         self.parent = parent
         self.initUI()
     
-    def viewModelTable(self, sheet):
+    def viewModelTable(self, sheet, txt):
         temp_list = []
         temp_list.append('RN')
         for index in range(1, int(interface.public_val.public_number_val)+1):
             temp_list.append(''.join(['x',str(index)]))
         temp_list.append('Sign')
         temp_list.append('Right side')
-        print(temp_list)
         try:
             df = pd.DataFrame(numpy.matlib.empty((int(interface.public_val.public_number_const)+1,\
                 int(interface.public_val.public_number_val)+3)), columns = temp_list)
@@ -42,33 +41,39 @@ class MainFrame(Frame): # main frame
                         )
         except:
             pass
-        sheet.headers(temp_list)
-        for index1 in range(0, int(interface.public_val.public_number_const)+1):
-            for index2 in range(0, int(interface.public_val.public_number_val)+2):
-                if index2 == 0:
-                    if index1 == 0:
-                        sheet.set_cell_data(index1, index2, value = 'Objective', set_copy = True, redraw = False)
+        try:
+            sheet.headers(temp_list)
+            for index1 in range(0, int(interface.public_val.public_number_const)+1):
+                for index2 in range(0, int(interface.public_val.public_number_val)+3):
+                    if index2 == 0:
+                        if index1 == 0:
+                            sheet.set_cell_data(index1, index2, value = 'Objective', set_copy = True, redraw = False)
+                        else:
+                            sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
                     else:
-                        sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
-                else:
-                    if index2 == int(interface.public_val.public_number_val)+1:
-                        sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
-                    else:
-                        sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
+                        if index2 == int(interface.public_val.public_number_val)+1:
+                            sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
+                        else:
+                            sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
+        except:
+            pass
+        try:
+            txt.insert('1.0', "Entry data to this table!")
+        except:
+            pass
             
-            
-    def startLoop(self, sheet):
+    def startLoop(self, sheet, txt):
         if interface.public_val.signal_loop == 1:
-            self.parent.after(3000, wrapped_partial(self.startLoop,sheet))
+            self.parent.after(3000, wrappedPartial(self.startLoop, sheet, txt))
         else:
-            self.viewModelTable(sheet)
+            self.viewModelTable(sheet, txt)
             
-    def configurationFrameOpen(self,sheet):
+    def configurationFrameOpen(self, sheet, txt):
         interface.public_val.signal_loop = 1
         root_temp= Tk()
         root_temp.geometry("300x350+300+300")
         app_temp = ConfigureFrame(root_temp)
-        self.startLoop(sheet)
+        self.startLoop(sheet, txt)
         root_temp.mainloop()
         
     def initUI(self):
@@ -76,25 +81,36 @@ class MainFrame(Frame): # main frame
         self.pack(fill=BOTH, expand=True)
         
         # Main uI 
+        frame_main0 = Frame(self)
+        frame_main0.pack(fill=X)
         frame_main1 = Frame(self)
         frame_main1.pack(fill=X)
         frame_main2 = Frame(self)
-        frame_main2.pack(fill=X)
+        frame_main2.pack(side= LEFT, fill=Y, pady=5, padx =5)
         frame_main3 = Frame(self)
         frame_main3.pack(side= LEFT, fill=Y, pady=5, padx =5)
+        frame_main4 = Frame(self)
+        frame_main4.pack(side= LEFT, fill=Y, pady=5, padx =5)
         
-        sheet1 =tksheet.Sheet(frame_main3, data = [[]], height = 800, width = 1500)
+        sheet1 =tksheet.Sheet(frame_main3, data = [[]], height= 1000, width = 10000)
         sheet1.pack(fill=BOTH, pady=10, padx=5, expand=True)
         sheet1.grid(row =20, column = 20,sticky="nswe")
         sheet1.enable_bindings()
         
-        txt = Text(frame_main1, bg ="#fcfcfc", height= 2)
+        txt = Text(frame_main2, bg ="#fcfcfc", height= 2, width = 20)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
     
-        Button_tab1_1 = Button(frame_main1, text="Linear Programming", width =20, command= partial(self.configurationFrameOpen, sheet1) )
-        Button_tab1_1.pack(side=LEFT, padx=5, pady=5)
-        Button_tab1_2 = Button(frame_main1, text="RUN", width =20)
-        Button_tab1_2.pack(side=RIGHT, padx=5, pady=5)
+        Button1_tab1 = Button(frame_main1, text="Linear Programming", width =1000, command= partial(self.configurationFrameOpen, sheet1, txt) )
+        Button1_tab1.pack(side=LEFT, padx=5, pady=5)
+        
+        Button1_frame0 = Button(frame_main0, text="File", width =5, highlightthickness=0, relief="flat")
+        Button1_frame0.pack(side=LEFT, padx=5, pady=5)
+        Button2_frame0 = Button(frame_main0, text="Edit", width =5, highlightthickness=0, relief="flat")
+        Button2_frame0.pack(side=LEFT, padx=5, pady=5)
+        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat")
+        Button3_frame0.pack(side=LEFT, padx=5, pady=5)
+        Button4_frame0 = Button(frame_main0, text="Help", width =5, highlightthickness=0, relief="flat")
+        Button4_frame0.pack(side=LEFT, padx=5, pady=5)
         
 if __name__ =="__main__":
     root = Tk()
