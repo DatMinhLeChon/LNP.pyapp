@@ -15,17 +15,7 @@ def wrapped_partial(func, *args, **kwargs):
     update_wrapper(partial_func, func)
     return partial_func
 
-#def trigger(sheet_temp):
-    #for i in range(sheet_temp.get_total_rows()):
-        #if compare_string(sheet_temp.get_cell_data(i, 3, return_copy = True), \
-        #sheet_temp.get_cell_data(i, 7,  return_copy = True), sheet_temp.get_cell_data(i, 4,  return_copy = True)) == 0:
-            #sheet_temp.highlight_cells(row = i, column = 7, bg = "Red", fg = None, redraw = False, overwrite = True)
-    # get_cell_data(r, c, return_copy = True)
-    # highlight_cells(row = 0, column = 0, cells = [], canvas = "table", bg = None, fg = None, redraw = False, overwrite = True)
-
-##_________button click in user interface main____thread & subprocess design 
-    
-
+""" Frame first """
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
         Frame.__init__(self, parent)
@@ -41,7 +31,8 @@ class MainFrame(Frame): # main frame
         temp_list.append('Right side')
         print(temp_list)
         try:
-            df = pd.DataFrame(np.matlib.empty((int(interface.public_val.public_number_const), int(interface.public_val.public_number_val)+3)), columns = temp_list)
+            df = pd.DataFrame(numpy.matlib.empty((int(interface.public_val.public_number_const)+1,\
+                int(interface.public_val.public_number_val)+3)), columns = temp_list)
             sheet.set_sheet_data(data = df.values.tolist(),\
                         reset_col_positions = True,\
                         reset_row_positions = True,\
@@ -50,13 +41,20 @@ class MainFrame(Frame): # main frame
                         reset_highlights = False,\
                         )
         except:
-            print('sheet error 1')
-        
-        for index1 in range(temp_list.index(temp_list[-1]) + 1):
-            try :
-                sheet.headers()[index1]= temp_list[index1]
-            except: 
-                pass
+            pass
+        sheet.headers(temp_list)
+        for index1 in range(0, int(interface.public_val.public_number_const)):
+            for index2 in range(0, int(interface.public_val.public_number_val)+2):
+                if index1 == 0:
+                    if index2 == 0:
+                        sheet.set_cell_data(index2, index1, value = 'Objective', set_copy = True, redraw = False)
+                    else:
+                        sheet.set_cell_data(index2, index1, value = ''.join(['Constraint', str(index2)]), set_copy = True, redraw = False)
+                else:
+                    if index1 == int(interface.public_val.public_number_val)+1:
+                        sheet.set_cell_data(index2, index1, value = '<=', set_copy = True, redraw = False)
+                    else:
+                        sheet.set_cell_data(index2, index1, value = 0 , set_copy = True, redraw = False)
             
             
     def startLoop(self, sheet):
