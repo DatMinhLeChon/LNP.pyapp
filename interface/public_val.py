@@ -1,4 +1,4 @@
-from tkinter import *
+"""glocal variable project-level"""
 
 public_number_const = 2
 public_number_val = 2 

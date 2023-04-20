@@ -15,7 +15,7 @@ def wrapped_partial(func, *args, **kwargs):
     update_wrapper(partial_func, func)
     return partial_func
 
-""" Frame first """
+""" Main Frame """
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
         Frame.__init__(self, parent)
@@ -43,18 +43,18 @@ class MainFrame(Frame): # main frame
         except:
             pass
         sheet.headers(temp_list)
-        for index1 in range(0, int(interface.public_val.public_number_const)):
+        for index1 in range(0, int(interface.public_val.public_number_const)+1):
             for index2 in range(0, int(interface.public_val.public_number_val)+2):
-                if index1 == 0:
-                    if index2 == 0:
-                        sheet.set_cell_data(index2, index1, value = 'Objective', set_copy = True, redraw = False)
+                if index2 == 0:
+                    if index1 == 0:
+                        sheet.set_cell_data(index1, index2, value = 'Objective', set_copy = True, redraw = False)
                     else:
-                        sheet.set_cell_data(index2, index1, value = ''.join(['Constraint', str(index2)]), set_copy = True, redraw = False)
+                        sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
                 else:
-                    if index1 == int(interface.public_val.public_number_val)+1:
-                        sheet.set_cell_data(index2, index1, value = '<=', set_copy = True, redraw = False)
+                    if index2 == int(interface.public_val.public_number_val)+1:
+                        sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
                     else:
-                        sheet.set_cell_data(index2, index1, value = 0 , set_copy = True, redraw = False)
+                        sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
             
             
     def startLoop(self, sheet):

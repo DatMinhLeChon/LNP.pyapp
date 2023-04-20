@@ -1,7 +1,7 @@
 # Scipy numerical library
 from scipy.optimize import linprog
 
-# Logical procesing here ...
+""" scipy linear"""
 class ModelLinear:
     def __init__(self, method_name, lhs_ineq , rhs_ineq, lhs_eq, rhs_eq, bnd):   
         self.obj = []
