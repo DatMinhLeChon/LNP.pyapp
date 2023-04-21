@@ -29,6 +29,7 @@ class MainFrame(Frame): # main frame
             temp_list.append(''.join(['x',str(index)]))
         temp_list.append('Sign')
         temp_list.append('Right side')
+        # init a table objective ans constraints 
         try:
             df = pd.DataFrame(numpy.matlib.empty((int(interface.public_val.public_number_const)+1,\
                 int(interface.public_val.public_number_val)+3)), columns = temp_list)
@@ -41,6 +42,7 @@ class MainFrame(Frame): # main frame
                         )
         except:
             pass
+        # change table index 
         try:
             sheet.headers(temp_list)
             for index1 in range(0, int(interface.public_val.public_number_const)+1):
@@ -52,8 +54,10 @@ class MainFrame(Frame): # main frame
                             sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
                     else:
                         if index2 == int(interface.public_val.public_number_val)+1:
+                            # init original sign
                             sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
                         else:
+                            # init original table data
                             sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
         except:
             pass

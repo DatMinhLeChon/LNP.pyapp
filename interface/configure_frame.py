@@ -21,7 +21,6 @@ class ConfigureFrame(Frame):
             print('error')
         
     def initUI(self):
-        
         self.parent.title("Dataset Configuration")
         self.pack(fill=BOTH, expand=True)
         
@@ -37,7 +36,6 @@ class ConfigureFrame(Frame):
         label_constraint.grid(column =1, row = 0, sticky= 'w')   
         spin_constraint = Spinbox(frame1, from_= 2, to = 20)
         spin_constraint.grid(column = 2, row = 0, sticky ='e')
-        
         
         #configure number variable
         label_variable = Label(frame1, text = "Number of Variables")
