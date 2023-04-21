@@ -3,7 +3,7 @@
 public_number_const = 2
 public_number_val = 2 
 
-objective_type = 1 # 1 is maximize, 0 minimize
+objective_type = None # 1 is maximize, 0 minimize
 
 public_lhs_ineq = {}
 public_rhs_ineq = {}

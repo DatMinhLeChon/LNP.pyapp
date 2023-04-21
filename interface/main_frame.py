@@ -52,13 +52,21 @@ class MainFrame(Frame): # main frame
                             sheet.set_cell_data(index1, index2, value = 'Objective', set_copy = True, redraw = False)
                         else:
                             sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
-                    else:
-                        if index2 == int(interface.public_val.public_number_val)+1:
-                            # init original sign
-                            sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
+                    elif index2 == int(interface.public_val.public_number_val)+1:
+                        if index1 == 0:
+                            sheet.set_cell_data(index1, index2, value = '||', set_copy = True, redraw = False)
                         else:
-                            # init original table data
-                            sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
+                            sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
+                    elif (index1 == 0) and (index2 == int(interface.public_val.public_number_val)+2):
+                        if interface.public_val.objective_type == 1:
+                            sheet.set_cell_data(index1, index2, value = 'Max', set_copy = True, redraw = False)
+                        elif interface.public_val.objective_type == 0:
+                            sheet.set_cell_data(index1, index2, value = 'Min', set_copy = True, redraw = False)
+                        else:
+                            sheet.set_cell_data(index1, index2, value = 'Unidentify', set_copy = True, redraw = False)
+                    else:
+                        sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
+                        
         except:
             pass
         try:
