@@ -58,9 +58,9 @@ class MainFrame(Frame): # main frame
                         else:
                             sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
                     elif (index1 == 0) and (index2 == int(interface.public_val.public_number_val)+2):
-                        if interface.public_val.objective_type == 1:
+                        if int(interface.public_val.objective_type) == 1:
                             sheet.set_cell_data(index1, index2, value = 'Max', set_copy = True, redraw = False)
-                        elif interface.public_val.objective_type == 0:
+                        elif int(interface.public_val.objective_type) == 0:
                             sheet.set_cell_data(index1, index2, value = 'Min', set_copy = True, redraw = False)
                         else:
                             sheet.set_cell_data(index1, index2, value = 'Unidentify', set_copy = True, redraw = False)
@@ -70,6 +70,7 @@ class MainFrame(Frame): # main frame
         except:
             pass
         try:
+            txt.delete('1.0', END)
             txt.insert('1.0', "Entry data to this table!")
         except:
             pass

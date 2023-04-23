@@ -10,13 +10,16 @@ class ConfigureFrame(Frame):
         Frame.__init__(self, parent)
         self.parent = parent
         self.initUI()
-        
-    def applyConfigureData(self, spin_constraints, spin_variables, var_type):
+    
+    def applyObjectiveType(self, var):
+        interface.public_val.objective_type = var.get()
+
+    def applyConfigureData(self, spin_constraints, spin_variables, var):
         interface.public_val.signal_loop = 0
         try:
             interface.public_val.public_number_const = spin_constraints.get()
             interface.public_val.public_number_val = spin_variables.get()
-            interface.public_val.objective_type = var_type.get()
+            interface.public_val.objective_type = var.get()
             self.parent.destroy()
         except:
             print('error')
@@ -48,11 +51,11 @@ class ConfigureFrame(Frame):
         label_frame = LabelFrame(frame2, text = "Objective")
         label_frame.pack(fill =X,anchor='sw' )
         
-        var= IntVar()
+        var_temp = IntVar()
         for (text, value) in interface.public_val.values.items():
-            Radiobutton(label_frame, value = value, variable = var, text = text).pack(side = TOP)
+            Radiobutton(label_frame, value = value, variable = var_temp, command= self.applyObjectiveType(var_temp), text = text).pack(side = TOP)
 
-        Button2 = Button(frame3, text="OK", width =10, command = partial(self.applyConfigureData, spin_constraint, spin_variable, var))
+        Button2 = Button(frame3, text="OK", width =10, command = partial(self.applyConfigureData, spin_constraint, spin_variable, var_temp))
         Button2.pack(side = RIGHT, padx=20, pady =5)
         
 
