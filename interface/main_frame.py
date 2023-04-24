@@ -112,7 +112,7 @@ class MainFrame(Frame): # main frame
         
         txt = Text(frame_main2, bg ="#fcfcfc", height= 2, width = 20)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
-    
+        
         Button1_tab1 = Button(frame_main1, text="Linear Programming", width =1000, command= partial(self.configurationFrameOpen, sheet1, txt) )
         Button1_tab1.pack(side=LEFT, padx=5, pady=5)
         

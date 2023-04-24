@@ -1,4 +1,3 @@
-
 import numpy as np
 from numpy.linalg import inv  # Matrix inverse
 from numpy.matlib import matrix  # Matrix data type
