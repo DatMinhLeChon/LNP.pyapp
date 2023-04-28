@@ -2,6 +2,7 @@ from tkinter.ttk import *
 from tkinter import *
 from tkinter import messagebox
 from interface.configure_frame import ConfigureFrame
+from interface.result_frame import ResultFrame
 from interface.public_val import *
 import interface.public_val
 import tksheet
@@ -22,6 +23,9 @@ class MainFrame(Frame): # main frame
         self.parent = parent
         self.initUI()
     
+    def applyFunctionLNP(self): # fill here
+        return
+        
     def viewModelTable(self, sheet, txt):
         temp_list = []
         temp_list.append('RN')
@@ -89,6 +93,13 @@ class MainFrame(Frame): # main frame
         self.startLoop(sheet, txt)
         root_temp.mainloop()
         
+    def runFunction(self):
+        root_temp = Tk()
+        root_temp.geometry('300x350+300+300')
+        interface.pyblic_val.result_lnp = self.applyFunctionLNP()
+        app_temp =ResultFrame(root_temp, interface.pyblic_val.result_lnp)
+        root_temp.mainloop()
+        
     def initUI(self):
         self.parent.title("LNP Computing")
         self.pack(fill=BOTH, expand=True)
@@ -120,7 +131,7 @@ class MainFrame(Frame): # main frame
         Button1_frame0.pack(side=LEFT, padx=5, pady=5)
         Button2_frame0 = Button(frame_main0, text="Edit", width =5, highlightthickness=0, relief="flat")
         Button2_frame0.pack(side=LEFT, padx=5, pady=5)
-        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat")
+        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat", command = runFunction)
         Button3_frame0.pack(side=LEFT, padx=5, pady=5)
         Button4_frame0 = Button(frame_main0, text="Help", width =5, highlightthickness=0, relief="flat")
         Button4_frame0.pack(side=LEFT, padx=5, pady=5)

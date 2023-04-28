@@ -23,3 +23,5 @@ root_temp = None # global variable Frame
 
 # signal loop use to check dataset frame running
 signal_loop = 1
+
+result_lnp = None
