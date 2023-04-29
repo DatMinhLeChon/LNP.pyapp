@@ -19,8 +19,15 @@ class ResultFrame(Frame):
         frame3 = Frame(self)
         frame3.pack(fill = BOTH)
         
-        text1 = Text(frame1, text= None, width = 10)
+        text1 = Text(frame1, text= None, width = 10, height = 2)
         text1.pack(fill = X, padx =5, pady =5)
         
-        Button2 = Button(frame2, text="End", width =5)
-        Button2.pack(side = RIGHT, padx=5, pady =5)
+        Button2 = Button(frame3, text="End", width =5)
+        Button2.pack(side = BOTTOM, padx=5, pady =5)
+        
+
+if __name__ == "__main__":
+    root = Tk()
+    root.geometry("300x300+200+200")
+    app =ResultFrame(root)
+    root.mainloop()

@@ -1,9 +1,9 @@
 from tkinter.ttk import *
 from tkinter import *
-from tkinter import messagebox
 from interface.configure_frame import ConfigureFrame
 from interface.result_frame import ResultFrame
 from interface.public_val import *
+from model.scipy_script import ModelLinear
 import interface.public_val
 import tksheet
 import pandas as pd
@@ -23,8 +23,51 @@ class MainFrame(Frame): # main frame
         self.parent = parent
         self.initUI()
     
-    def applyFunctionLNP(self): # fill here
-        return
+    def applyModelLNP(self, txt):
+        model_lnp = ModelLinear(\
+            interface.public_val.public_obj,\
+            interface.public_val.public_lhs_ineq,\
+            interface.public_val.public_rhs_ineq,\
+            interface.public_val.public_lhs_eq,\
+            interface.public_val.public_rhs_eq,\
+        )
+        print(model_lnp.visualize())
+        
+    def applyFunctionLNP(self, sheet, txt): # fill here.
+        number_ineq = 0
+        number_eq = 0
+        for index1 in range(0, int(interface.public_val.public_number_const)+1):
+            if sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == "<=" or \
+            sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == ">=":
+                number_ineq += 1
+            elif sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == "=":
+                number_eq += 1
+        interface.public_val.public_lhs_eq = [[0 for i in range(int(interface.public_val.public_number_val))] for j in range(number_eq)]
+        interface.public_val.public_lhs_ineq = [[0 for i in range(int(interface.public_val.public_number_val))] for j in range(number_ineq)]
+        interface.public_val.public_rhs_eq = [0 for i in range(number_eq)]
+        interface.public_val.public_rhs_ineq = [0 for i in range(number_ineq)]
+        interface.public_val.public_obj = [0 for i in range(int(interface.public_val.public_number_val))]
+        number_ineq = 0
+        number_eq = 0
+        for index1 in range(0, int(interface.public_val.public_number_const)):
+            if sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == "<=":
+                for index2 in range(0, int(interface.public_val.public_number_val)):
+                    interface.public_val.public_lhs_ineq[number_ineq][index2] = int(sheet.get_cell_data(index1 +1, index2 +1))
+                interface.public_val.public_rhs_ineq[number_ineq] = int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+                number_ineq +=1
+            elif sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == ">=":
+                for index2 in range(0, int(interface.public_val.public_number_val)):
+                    interface.public_val.public_lhs_ineq[number_ineq][index2] = -int(sheet.get_cell_data(index1 +1, index2 +1))
+                interface.public_val.public_rhs_ineq[number_ineq] = -int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+                number_ineq += 1
+            elif sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == "=":
+                for index2 in range(0, int(interface.public_val.public_number_val)):
+                    interface.public_val.public_lhs_eq[number_ineq][index2] == int(sheet.get_cell_data(index1 +1, index2 +1))
+                interface.public_val.public_rhs_ineq[number_eq] = int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+                number_eq += 1
+        for index in range(0, int(interface.public_val.public_number_val)):
+            interface.public_val.public_obj[index] = int(sheet.get_cell_data(0, int(interface.public_val.public_number_val)))
+        self.applyModelLNP(txt)
         
     def viewModelTable(self, sheet, txt):
         temp_list = []
@@ -93,11 +136,11 @@ class MainFrame(Frame): # main frame
         self.startLoop(sheet, txt)
         root_temp.mainloop()
         
-    def runFunction(self):
+    def runFunction(self, sheet, txt):
         root_temp = Tk()
         root_temp.geometry('300x350+300+300')
-        interface.pyblic_val.result_lnp = self.applyFunctionLNP()
-        app_temp =ResultFrame(root_temp, interface.pyblic_val.result_lnp)
+        interface.public_val.result_lnp = self.applyFunctionLNP(sheet,txt)
+        app_temp =ResultFrame(root_temp)
         root_temp.mainloop()
         
     def initUI(self):
@@ -131,7 +174,7 @@ class MainFrame(Frame): # main frame
         Button1_frame0.pack(side=LEFT, padx=5, pady=5)
         Button2_frame0 = Button(frame_main0, text="Edit", width =5, highlightthickness=0, relief="flat")
         Button2_frame0.pack(side=LEFT, padx=5, pady=5)
-        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat", command = runFunction)
+        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat", command = partial(self.runFunction, sheet1, txt))
         Button3_frame0.pack(side=LEFT, padx=5, pady=5)
         Button4_frame0 = Button(frame_main0, text="Help", width =5, highlightthickness=0, relief="flat")
         Button4_frame0.pack(side=LEFT, padx=5, pady=5)

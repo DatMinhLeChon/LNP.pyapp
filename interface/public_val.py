@@ -4,17 +4,18 @@ public_number_const = None
 public_number_val = None
 
 objective_type = None # 1 is maximize, 0 minimize
+public_obj = None
 
 # inequal
-public_lhs_ineq = {}
-public_rhs_ineq = {}
+public_lhs_ineq = None
+public_rhs_ineq = None
 
 #equal
-public_lhs_eq = {}
-public_rhs_eq = {}
+public_lhs_eq = None
+public_rhs_eq = None
 
 public_method = ''
-public_bnd = ''
+
 values = {"Maximize" : 1, "Minimize" : 0}
 
 # Frame 

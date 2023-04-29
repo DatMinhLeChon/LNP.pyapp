@@ -64,4 +64,4 @@ if __name__ =="__main__":
     root.geometry('300x350+200+200') 
     app= ConfigureFrame(root)
     root.mainloop()
-# python interface\configure_frame.py
+# python interface\configure_frame.py›
