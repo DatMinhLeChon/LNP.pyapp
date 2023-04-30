@@ -9,7 +9,7 @@ Python application development
 # Documentation:
 *scipy API
 - link: https://docs.scipy.org/doc//scipy/index.html
-* tkinter
+*tkinter
 - link: https://docs.python.org/3/library/tkinter.html
 # Running
 run this command in LNP.pyapp project : 
