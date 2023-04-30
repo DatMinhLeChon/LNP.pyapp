@@ -1,85 +1,78 @@
 from tkinter.ttk import *
 from tkinter import *
+from public_var import *
 from interface.configure_frame import ConfigureFrame
 from interface.result_frame import ResultFrame
-from interface.public_val import *
-from model.scipy_script import ModelLinear
-import interface.public_val
+from apply_model import applyModelLNP
+from functools import partial, update_wrapper
+import public_var
 import tksheet
 import pandas as pd
 import numpy.matlib
-import numpy as np
-from functools import partial, update_wrapper
 
 def wrappedPartial(func, *args, **kwargs):
     partial_func = partial(func, *args, **kwargs)
     update_wrapper(partial_func, func)
     return partial_func
 
-""" Main Frame """
+# Main frame
 class MainFrame(Frame): # main frame
     def __init__(self, parent):
         Frame.__init__(self, parent)
         self.parent = parent
         self.initUI()
     
-    def applyModelLNP(self, txt):
-        model_lnp = ModelLinear(\
-            interface.public_val.public_obj,\
-            interface.public_val.public_lhs_ineq,\
-            interface.public_val.public_rhs_ineq,\
-            interface.public_val.public_lhs_eq,\
-            interface.public_val.public_rhs_eq,\
-        )
-        print(model_lnp.visualize())
+    def getResult(self, txt):
+        txt.delete('1.0', END)
+        txt.insert("1.0", applyModelLNP())
         
     def applyFunctionLNP(self, sheet, txt): # fill here.
         number_ineq = 0
         number_eq = 0
-        for index1 in range(0, int(interface.public_val.public_number_const)+1):
-            if sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == "<=" or \
-            sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == ">=":
+        for index1 in range(0, int(public_var.public_number_const)+1):
+            if sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == "<=" or \
+            sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == ">=":
                 number_ineq += 1
-            elif sheet.get_cell_data(index1, int(interface.public_val.public_number_val)+1) == "=":
+            elif sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == "=":
                 number_eq += 1
-        interface.public_val.public_lhs_eq = [[0 for i in range(int(interface.public_val.public_number_val))] for j in range(number_eq)]
-        interface.public_val.public_lhs_ineq = [[0 for i in range(int(interface.public_val.public_number_val))] for j in range(number_ineq)]
-        interface.public_val.public_rhs_eq = [0 for i in range(number_eq)]
-        interface.public_val.public_rhs_ineq = [0 for i in range(number_ineq)]
-        interface.public_val.public_obj = [0 for i in range(int(interface.public_val.public_number_val))]
+        public_var.public_lhs_eq = [[0 for i in range(int(public_var.public_number_val))] for j in range(number_eq)]
+        public_var.public_lhs_ineq = [[0 for i in range(int(public_var.public_number_val))] for j in range(number_ineq)]
+        public_var.public_rhs_eq = [0 for i in range(number_eq)]
+        public_var.public_rhs_ineq = [0 for i in range(number_ineq)]
+        public_var.public_obj = [0 for i in range(int(public_var.public_number_val))]
         number_ineq = 0
         number_eq = 0
-        for index1 in range(0, int(interface.public_val.public_number_const)):
-            if sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == "<=":
-                for index2 in range(0, int(interface.public_val.public_number_val)):
-                    interface.public_val.public_lhs_ineq[number_ineq][index2] = int(sheet.get_cell_data(index1 +1, index2 +1))
-                interface.public_val.public_rhs_ineq[number_ineq] = int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+        for index1 in range(0, int(public_var.public_number_const)):
+            if sheet.get_cell_data(index1+1, int(public_var.public_number_val)+1) == "<=":
+                for index2 in range(0, int(public_var.public_number_val)):
+                    public_var.public_lhs_ineq[number_ineq][index2] = int(sheet.get_cell_data(index1 +1, index2 +1))
+                public_var.public_rhs_ineq[number_ineq] = int(sheet.get_cell_data(index1 +1, int(public_var.public_number_val)+2))
                 number_ineq +=1
-            elif sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == ">=":
-                for index2 in range(0, int(interface.public_val.public_number_val)):
-                    interface.public_val.public_lhs_ineq[number_ineq][index2] = -int(sheet.get_cell_data(index1 +1, index2 +1))
-                interface.public_val.public_rhs_ineq[number_ineq] = -int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+            elif sheet.get_cell_data(index1+1, int(public_var.public_number_val)+1) == ">=":
+                for index2 in range(0, int(public_var.public_number_val)):
+                    public_var.public_lhs_ineq[number_ineq][index2] = -int(sheet.get_cell_data(index1 +1, index2 +1))
+                public_var.public_rhs_ineq[number_ineq] = -int(sheet.get_cell_data(index1 +1, int(public_var.public_number_val)+2))
                 number_ineq += 1
-            elif sheet.get_cell_data(index1+1, int(interface.public_val.public_number_val)+1) == "=":
-                for index2 in range(0, int(interface.public_val.public_number_val)):
-                    interface.public_val.public_lhs_eq[number_ineq][index2] == int(sheet.get_cell_data(index1 +1, index2 +1))
-                interface.public_val.public_rhs_ineq[number_eq] = int(sheet.get_cell_data(index1 +1, int(interface.public_val.public_number_val)+2))
+            elif sheet.get_cell_data(index1+1, int(public_var.public_number_val)+1) == "=":
+                for index2 in range(0, int(public_var.public_number_val)):
+                    public_var.public_lhs_eq[number_ineq][index2] == int(sheet.get_cell_data(index1 +1, index2 +1))
+                public_var.public_rhs_ineq[number_eq] = int(sheet.get_cell_data(index1 +1, int(public_var.public_number_val)+2))
                 number_eq += 1
-        for index in range(0, int(interface.public_val.public_number_val)):
-            interface.public_val.public_obj[index] = int(sheet.get_cell_data(0, int(interface.public_val.public_number_val)))
-        self.applyModelLNP(txt)
+        for index in range(0, int(public_var.public_number_val)):
+            public_var.public_obj[index] = int(sheet.get_cell_data(0, int(public_var.public_number_val)))
+        self.getResult(txt)
         
     def viewModelTable(self, sheet, txt):
         temp_list = []
         temp_list.append('RN')
-        for index in range(1, int(interface.public_val.public_number_val)+1):
+        for index in range(1, int(public_var.public_number_val)+1):
             temp_list.append(''.join(['x',str(index)]))
         temp_list.append('Sign')
         temp_list.append('Right side')
         # init a table objective ans constraints 
         try:
-            df = pd.DataFrame(numpy.matlib.empty((int(interface.public_val.public_number_const)+1,\
-                int(interface.public_val.public_number_val)+3)), columns = temp_list)
+            df = pd.DataFrame(numpy.matlib.empty((int(public_var.public_number_const)+1,\
+                int(public_var.public_number_val)+3)), columns = temp_list)
             sheet.set_sheet_data(data = df.values.tolist(),\
                         reset_col_positions = True,\
                         reset_row_positions = True,\
@@ -92,22 +85,22 @@ class MainFrame(Frame): # main frame
         # change table index 
         try:
             sheet.headers(temp_list)
-            for index1 in range(0, int(interface.public_val.public_number_const)+1):
-                for index2 in range(0, int(interface.public_val.public_number_val)+3):
+            for index1 in range(0, int(public_var.public_number_const)+1):
+                for index2 in range(0, int(public_var.public_number_val)+3):
                     if index2 == 0:
                         if index1 == 0:
                             sheet.set_cell_data(index1, index2, value = 'Objective', set_copy = True, redraw = False)
                         else:
                             sheet.set_cell_data(index1, index2, value = ''.join(['Constraint', str(index1)]), set_copy = True, redraw = False)
-                    elif index2 == int(interface.public_val.public_number_val)+1:
+                    elif index2 == int(public_var.public_number_val)+1:
                         if index1 == 0:
                             sheet.set_cell_data(index1, index2, value = '||', set_copy = True, redraw = False)
                         else:
                             sheet.set_cell_data(index1, index2, value = '<=', set_copy = True, redraw = False)
-                    elif (index1 == 0) and (index2 == int(interface.public_val.public_number_val)+2):
-                        if int(interface.public_val.objective_type) == 1:
+                    elif (index1 == 0) and (index2 == int(public_var.public_number_val)+2):
+                        if int(public_var.objective_type) == 1:
                             sheet.set_cell_data(index1, index2, value = 'Max', set_copy = True, redraw = False)
-                        elif int(interface.public_val.objective_type) == 0:
+                        elif int(public_var.objective_type) == 0:
                             sheet.set_cell_data(index1, index2, value = 'Min', set_copy = True, redraw = False)
                         else:
                             sheet.set_cell_data(index1, index2, value = 'Unidentify', set_copy = True, redraw = False)
@@ -123,13 +116,13 @@ class MainFrame(Frame): # main frame
             pass
             
     def startLoop(self, sheet, txt):
-        if interface.public_val.signal_loop == 1:
+        if public_var.signal_loop == 1:
             self.parent.after(3000, wrappedPartial(self.startLoop, sheet, txt))
         else:
             self.viewModelTable(sheet, txt)
             
     def configurationFrameOpen(self, sheet, txt):
-        interface.public_val.signal_loop = 1
+        public_var.signal_loop = 1
         root_temp= Tk()
         root_temp.geometry("300x350+300+300")
         app_temp = ConfigureFrame(root_temp)
@@ -139,7 +132,7 @@ class MainFrame(Frame): # main frame
     def runFunction(self, sheet, txt):
         root_temp = Tk()
         root_temp.geometry('300x350+300+300')
-        interface.public_val.result_lnp = self.applyFunctionLNP(sheet,txt)
+        public_var.result_lnp = self.applyFunctionLNP(sheet,txt)
         app_temp =ResultFrame(root_temp)
         root_temp.mainloop()
         

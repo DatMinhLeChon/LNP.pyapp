@@ -1,10 +1,8 @@
-from functools import partial
 from tkinter.ttk import *
 from tkinter import *
-from tkinter import messagebox
 from interface.main_frame import *
 from model import *
-from interface.public_val import root_main
+import public_var 
 
 
 ##Running 2+ funtion in event
@@ -17,10 +15,10 @@ def sequence(*functions):
     return func
 
 if __name__ =="__main__":
-    root_main = Tk()
-    root_main.geometry('1200x600+200+200') 
-    app = MainFrame(root_main)
-    root_main.mainloop()
+    public_var.root_main = Tk()
+    public_var.root_main.geometry('1200x600+200+200') 
+    app = MainFrame(public_var.root_main)
+    public_var.root_main.mainloop()
 
 
 #  python main.py
