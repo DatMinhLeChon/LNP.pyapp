@@ -15,12 +15,14 @@ class ConfigureFrame(Frame):
         public_var.objective_type = var.get()
 
     def applyConfigureData(self, spin_constraints, spin_variables, var):
-        public_var.signal_loop = 0
+        public_var.signal_loop = 0 # now running, at this time, mainframe do not create table
         try:
             public_var.public_number_const = spin_constraints.get()
             public_var.public_number_val = spin_variables.get()
             public_var.objective_type = var.get()
-            self.parent.destroy()
+            self.parent.destroy() 
+            # startLoop with set public_var.signal_loop to 1, 
+            # that the process configure frame data end, and the main frame with creaate table
         except:
             print('error')
         
@@ -51,6 +53,7 @@ class ConfigureFrame(Frame):
         label_frame = LabelFrame(frame2, text = "Objective")
         label_frame.pack(fill =X,anchor='sw' )
         
+        # button choose min or max objective linear programming
         var_temp = IntVar()
         for (text, value) in public_var.values.items():
             Radiobutton(label_frame, value = value, variable = var_temp, command= self.applyObjectiveType(var_temp), text = text).pack(side = TOP)

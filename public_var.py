@@ -1,7 +1,7 @@
-"""glocal variable project-level"""
+"""glocal variable project-level""" #________
 
-public_number_const = None
-public_number_val = None
+public_number_const = None #configure number of constrain
+public_number_val = None # configure number of variable
 
 objective_type = None # 1 is maximize, 0 minimize
 public_obj = None #objective array 1D
@@ -10,7 +10,7 @@ public_obj = None #objective array 1D
 public_lhs_ineq = None # inequal left side array 2D
 public_rhs_ineq = None # inequal right side array 1D
 
-#equal
+#equal 
 public_lhs_eq = None # equal left side array 2D
 public_rhs_eq = None # equal right side array 1D
 

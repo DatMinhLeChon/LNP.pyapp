@@ -25,7 +25,8 @@ class MainFrame(Frame): # main frame
     def getResult(self, txt):
         txt.delete('1.0', END)
         txt.insert("1.0", applyModelLNP())
-        
+    
+    # processing table data from main frame to public_var
     def applyFunctionLNP(self, sheet, txt): # fill here.
         number_ineq = 0
         number_eq = 0
@@ -62,7 +63,8 @@ class MainFrame(Frame): # main frame
             public_var.public_obj[index] = int(sheet.get_cell_data(0, int(public_var.public_number_val)))
         self.getResult(txt)
         
-    def viewModelTable(self, sheet, txt):
+    # create table at mainframe from last data from configure frame
+    def eventViewModelTable(self, sheet, txt):
         temp_list = []
         temp_list.append('RN')
         for index in range(1, int(public_var.public_number_val)+1):
@@ -114,14 +116,17 @@ class MainFrame(Frame): # main frame
             txt.insert('1.0', "Entry data to this table!")
         except:
             pass
-            
+    
+    # configure Frame checking ruuning
+    # if nonrunning, the main frame create table with dataset from the last configure frame data return.
     def startLoop(self, sheet, txt):
         if public_var.signal_loop == 1:
             self.parent.after(3000, wrappedPartial(self.startLoop, sheet, txt))
         else:
-            self.viewModelTable(sheet, txt)
-            
-    def configurationFrameOpen(self, sheet, txt):
+            self.eventViewModelTable(sheet, txt)
+        
+    # function open configure frame, by event click button in mainframe
+    def eventConfigurationFrameOpen(self, sheet, txt):
         public_var.signal_loop = 1
         root_temp= Tk()
         root_temp.geometry("300x350+300+300")
@@ -129,7 +134,9 @@ class MainFrame(Frame): # main frame
         self.startLoop(sheet, txt)
         root_temp.mainloop()
         
-    def runFunction(self, sheet, txt):
+    # run result frame, and create model data from table data in the last fill at mainframe_table
+    # applyFunctionLNP: function processing table data from mainframe
+    def eventRunFunction(self, sheet, txt):
         root_temp = Tk()
         root_temp.geometry('300x350+300+300')
         public_var.result_lnp = self.applyFunctionLNP(sheet,txt)
@@ -160,14 +167,15 @@ class MainFrame(Frame): # main frame
         txt = Text(frame_main2, bg ="#fcfcfc", height= 2, width = 20)
         txt.pack(fill=BOTH, pady=0, padx=5, expand=True)
         
-        Button1_tab1 = Button(frame_main1, text="Linear Programming", width =1000, command= partial(self.configurationFrameOpen, sheet1, txt) )
+        # button open configure Frame
+        Button1_tab1 = Button(frame_main1, text="Linear Programming", width =1000, command= partial(self.eventConfigurationFrameOpen, sheet1, txt) )
         Button1_tab1.pack(side=LEFT, padx=5, pady=5)
         
         Button1_frame0 = Button(frame_main0, text="File", width =5, highlightthickness=0, relief="flat")
         Button1_frame0.pack(side=LEFT, padx=5, pady=5)
         Button2_frame0 = Button(frame_main0, text="Edit", width =5, highlightthickness=0, relief="flat")
         Button2_frame0.pack(side=LEFT, padx=5, pady=5)
-        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat", command = partial(self.runFunction, sheet1, txt))
+        Button3_frame0 = Button(frame_main0, text="RUN", width =5, highlightthickness=0, relief="flat", command = partial(self.eventRunFunction, sheet1, txt))
         Button3_frame0.pack(side=LEFT, padx=5, pady=5)
         Button4_frame0 = Button(frame_main0, text="Help", width =5, highlightthickness=0, relief="flat")
         Button4_frame0.pack(side=LEFT, padx=5, pady=5)
