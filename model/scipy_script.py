@@ -13,7 +13,6 @@ class ModelLinear:
         self.rhs_eq = rhs_eq
         self.method = "highs-ds"
         
-        
     def linearProgramming(self):
         if self.lhs_eq == []:
             return linprog(\

@@ -9,4 +9,4 @@ def applyModelLNP():
         public_var.public_lhs_eq,\
         public_var.public_rhs_eq,\
     )
-    return model_lnp.visualize()
+    return model_lnp

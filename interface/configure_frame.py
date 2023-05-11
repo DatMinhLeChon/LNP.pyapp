@@ -13,18 +13,16 @@ class ConfigureFrame(Frame):
     
     def applyObjectiveType(self, var):
         public_var.objective_type = var.get()
-
+        
     def applyConfigureData(self, spin_constraints, spin_variables, var):
-        public_var.signal_loop = 0 # now running, at this time, mainframe do not create table
-        try:
-            public_var.public_number_const = spin_constraints.get()
-            public_var.public_number_val = spin_variables.get()
-            public_var.objective_type = var.get()
-            self.parent.destroy() 
-            # startLoop with set public_var.signal_loop to 1, 
-            # that the process configure frame data end, and the main frame with creaate table
-        except:
-            print('error')
+        public_var.signal_loop = 0 
+        # now running, at this time, mainframe do not create table
+        public_var.public_number_const = spin_constraints.get()
+        public_var.public_number_val = spin_variables.get()
+        public_var.objective_type = var.get()
+        self.parent.destroy() 
+        # startLoop with set public_var.signal_loop to 1, 
+        # The process configure frame data end, and the main frame with creaate table
         
     def initUI(self):
         self.parent.title("Dataset Configuration")
@@ -56,7 +54,7 @@ class ConfigureFrame(Frame):
         # button choose min or max objective linear programming
         var_temp = IntVar()
         for (text, value) in public_var.values.items():
-            Radiobutton(label_frame, value = value, variable = var_temp, command= self.applyObjectiveType(var_temp), text = text).pack(side = TOP)
+            Radiobutton(label_frame, value = value, variable = self.var_temp, command= self.applyObjectiveType(self.var_temp), text = text).pack(side = TOP)
 
         Button2 = Button(frame3, text="OK", width =10, command = partial(self.applyConfigureData, spin_constraint, spin_variable, var_temp))
         Button2.pack(side = RIGHT, padx=20, pady =5)

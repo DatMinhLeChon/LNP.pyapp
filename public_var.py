@@ -26,3 +26,5 @@ root_temp = None # global variable Frame
 signal_loop = 1 # check table create in main frame, if already init, close configuration frame 
 
 result_lnp = None # model variable
+
+model_linear_programming = None

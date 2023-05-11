@@ -22,14 +22,14 @@ class MainFrame(Frame): # main frame
         self.parent = parent
         self.initUI()
     
-    def getResult(self, txt):
+    def eventGetResultToPublicModel(self, txt):
         txt.delete('1.0', END)
-        txt.insert("1.0", applyModelLNP())
+        public_var.model_linear_programming = applyModelLNP()
+        txt.insert("1.0", public_var.model_linear_programming.visualize())
     
     # processing table data from main frame to public_var
     def applyFunctionLNP(self, sheet, txt): # fill here.
-        number_ineq = 0
-        number_eq = 0
+        number_ineq, number_eq = 0, 0 # init count variable
         for index1 in range(0, int(public_var.public_number_const)+1):
             if sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == "<=" or \
             sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == ">=":
@@ -41,8 +41,7 @@ class MainFrame(Frame): # main frame
         public_var.public_rhs_eq = [0 for i in range(number_eq)]
         public_var.public_rhs_ineq = [0 for i in range(number_ineq)]
         public_var.public_obj = [0 for i in range(int(public_var.public_number_val))]
-        number_ineq = 0
-        number_eq = 0
+        number_ineq, number_eq = 0, 0 # reset count variable 
         for index1 in range(0, int(public_var.public_number_const)):
             if sheet.get_cell_data(index1+1, int(public_var.public_number_val)+1) == "<=":
                 for index2 in range(0, int(public_var.public_number_val)):
@@ -61,7 +60,7 @@ class MainFrame(Frame): # main frame
                 number_eq += 1
         for index in range(0, int(public_var.public_number_val)):
             public_var.public_obj[index] = int(sheet.get_cell_data(0, int(public_var.public_number_val)))
-        self.getResult(txt)
+        self.eventGetResultToPublicModel(txt)
         
     # create table at mainframe from last data from configure frame
     def eventViewModelTable(self, sheet, txt):
@@ -133,6 +132,13 @@ class MainFrame(Frame): # main frame
         app_temp = ConfigureFrame(root_temp)
         self.startLoop(sheet, txt)
         root_temp.mainloop()
+        
+    def eventResultFrameOpen(self):
+        root_temp= Tk()
+        root_temp.geometry("300x350+300+300")
+        app_temp = ResultFrame(root_temp)
+        root_temp.mainloop() 
+        
         
     # run result frame, and create model data from table data in the last fill at mainframe_table
     # applyFunctionLNP: function processing table data from mainframe
