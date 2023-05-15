@@ -17,6 +17,7 @@ def sequence(*functions):
 if __name__ =="__main__":
     public_var.root_main = Tk()
     public_var.root_main.geometry('1200x600+200+200') 
+    public_var.root_main.config(bg="white")
     app = MainFrame(public_var.root_main)
     public_var.root_main.mainloop()
 

@@ -25,8 +25,7 @@ class MainFrame(Frame): # main frame
 
     def eventGetResultToPublicModel(self, txt):
         txt.delete('1.0', END)
-        public_var.model_linear_programming = applyModelLNP()
-        txt.insert("1.0", public_var.model_linear_programming.visualize())
+        txt.insert("1.0", public_var.model_linear_programming.linearProgramming().message)
     
     # processing table data from main frame to public_var
     def applyFirstDataFunctionLNP(self, sheet, txt): # fill here.
@@ -59,8 +58,13 @@ class MainFrame(Frame): # main frame
                     public_var.public_lhs_eq[number_ineq][index2] == int(sheet.get_cell_data(index1 +1, index2 +1))
                 public_var.public_rhs_ineq[number_eq] = int(sheet.get_cell_data(index1 +1, int(public_var.public_number_val)+2))
                 number_eq += 1
+        # objective coefficient apply (public_obj)
         for index in range(0, int(public_var.public_number_val)):
-            public_var.public_obj[index] = int(sheet.get_cell_data(0, int(public_var.public_number_val)))
+            if int(public_var.objective_type) == 0: 
+                public_var.public_obj[index] = int(sheet.get_cell_data(0, int(public_var.public_number_val)))
+            else:
+                public_var.public_obj[index] = -int(sheet.get_cell_data(0, int(public_var.public_number_val)))
+        public_var.model_linear_programming = applyModelLNP()
         self.eventGetResultToPublicModel(txt)
         
     # create table at mainframe from last data from configure frame
@@ -133,9 +137,9 @@ class MainFrame(Frame): # main frame
     # run result frame, and create model data from table data in the last fill at mainframe_table
     # applyFunctionLNP: function processing table data from mainframe
     def eventRunFunction(self, sheet, txt):
+        self.applyFirstDataFunctionLNP(sheet,txt)
         root_temp = Toplevel()
         root_temp.geometry('300x350+300+300')
-        public_var.result_lnp = self.applyFirstDataFunctionLNP(sheet,txt)
         app_temp =ResultFrame(root_temp)
         root_temp.mainloop()
         

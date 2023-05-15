@@ -1,5 +1,6 @@
 # Scipy numerical library
 from scipy.optimize import linprog
+import public_var
 
 """ scipy linear"""
 class ModelLinear:
@@ -39,8 +40,11 @@ class ModelLinear:
                 )
     
     def visualize(self):
-        opt = self.linearProgramming()
-        return opt
-        
-        
+        opt= self.linearProgramming()
+        if int(public_var.objective_type) ==1:
+            return -opt.fun
+        else:
+            return opt.fun
+            
+
 # python3 logical_fucntion\linalg_numpy.py

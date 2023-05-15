@@ -16,7 +16,6 @@ class ConfigureFrame(Frame):
         public_var.public_number_const = spin_constraints.get()
         public_var.public_number_val = spin_variables.get()
         public_var.objective_type = int(var.get())
-        print(public_var.objective_type)
         self.parent.destroy()
         return public_var.objective_type
         # startLoop with set public_var.signal_loop to 1, 
