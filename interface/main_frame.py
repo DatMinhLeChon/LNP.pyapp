@@ -130,17 +130,10 @@ class MainFrame(Frame): # main frame
         self.eventStartLoop(sheet, txt)
         root_temp.mainloop()
     
-    # open Resultframe and print result of model
-    def eventResultFrameOpen(self):
-        root_temp= Tk()
-        root_temp.geometry("300x350+300+300")
-        app_temp = ResultFrame(root_temp)
-        root_temp.mainloop() 
-    
     # run result frame, and create model data from table data in the last fill at mainframe_table
     # applyFunctionLNP: function processing table data from mainframe
     def eventRunFunction(self, sheet, txt):
-        root_temp = Tk()
+        root_temp = Toplevel()
         root_temp.geometry('300x350+300+300')
         public_var.result_lnp = self.applyFirstDataFunctionLNP(sheet,txt)
         app_temp =ResultFrame(root_temp)
