@@ -17,6 +17,7 @@ class MainFrame(Frame): # main frame
         self.parent = parent
         self.initUI()
         
+    # change type of called prototype to run function: wrappedPartial(function_name, function_var_1, ....)
     def wrappedPartial(self, func, *args, **kwargs):
         partial_func = partial(func, *args, **kwargs)
         update_wrapper(partial_func, func)
