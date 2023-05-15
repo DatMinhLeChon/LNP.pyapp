@@ -3,7 +3,7 @@
 public_number_const = None #configure number of constrain
 public_number_val = None # configure number of variable
 
-objective_type = None # 1 is maximize, 0 minimize
+objective_type = -1 # 1 is maximize, 0 minimize
 public_obj = None #objective array 1D
 
 # inequal

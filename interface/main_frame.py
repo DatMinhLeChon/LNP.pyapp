@@ -1,6 +1,5 @@
 from tkinter.ttk import *
 from tkinter import *
-from public_var import *
 from interface.configure_frame import ConfigureFrame
 from interface.result_frame import ResultFrame
 from apply_model import applyModelLNP
@@ -9,11 +8,7 @@ import public_var
 import tksheet
 import pandas as pd
 import numpy.matlib
-
-def wrappedPartial(func, *args, **kwargs):
-    partial_func = partial(func, *args, **kwargs)
-    update_wrapper(partial_func, func)
-    return partial_func
+import time
 
 # Main frame
 class MainFrame(Frame): # main frame
@@ -21,14 +16,19 @@ class MainFrame(Frame): # main frame
         Frame.__init__(self, parent)
         self.parent = parent
         self.initUI()
-    
+        
+    def wrappedPartial(self, func, *args, **kwargs):
+        partial_func = partial(func, *args, **kwargs)
+        update_wrapper(partial_func, func)
+        return partial_func
+
     def eventGetResultToPublicModel(self, txt):
         txt.delete('1.0', END)
         public_var.model_linear_programming = applyModelLNP()
         txt.insert("1.0", public_var.model_linear_programming.visualize())
     
     # processing table data from main frame to public_var
-    def applyFunctionLNP(self, sheet, txt): # fill here.
+    def applyFirstDataFunctionLNP(self, sheet, txt): # fill here.
         number_ineq, number_eq = 0, 0 # init count variable
         for index1 in range(0, int(public_var.public_number_const)+1):
             if sheet.get_cell_data(index1, int(public_var.public_number_val)+1) == "<=" or \
@@ -81,8 +81,7 @@ class MainFrame(Frame): # main frame
                         verify = False,\
                         reset_highlights = False,\
                         )
-        except:
-            pass
+        except: pass
         # change table index 
         try:
             sheet.headers(temp_list)
@@ -107,45 +106,42 @@ class MainFrame(Frame): # main frame
                             sheet.set_cell_data(index1, index2, value = 'Unidentify', set_copy = True, redraw = False)
                     else:
                         sheet.set_cell_data(index1, index2, value = 0 , set_copy = True, redraw = False)
-                        
-        except:
-            pass
+        except: pass
         try:
             txt.delete('1.0', END)
             txt.insert('1.0', "Entry data to this table!")
-        except:
-            pass
+        except: pass
     
     # configure Frame checking ruuning
     # if nonrunning, the main frame create table with dataset from the last configure frame data return.
-    def startLoop(self, sheet, txt):
+    def eventStartLoop(self, sheet, txt):
         if public_var.signal_loop == 1:
-            self.parent.after(3000, wrappedPartial(self.startLoop, sheet, txt))
+            self.parent.after(3000, self.wrappedPartial(self.eventStartLoop, sheet, txt))
         else:
             self.eventViewModelTable(sheet, txt)
-        
+    
     # function open configure frame, by event click button in mainframe
     def eventConfigurationFrameOpen(self, sheet, txt):
         public_var.signal_loop = 1
-        root_temp= Tk()
+        root_temp= Toplevel()
         root_temp.geometry("300x350+300+300")
         app_temp = ConfigureFrame(root_temp)
-        self.startLoop(sheet, txt)
+        self.eventStartLoop(sheet, txt)
         root_temp.mainloop()
-        
+    
+    # open Resultframe and print result of model
     def eventResultFrameOpen(self):
         root_temp= Tk()
         root_temp.geometry("300x350+300+300")
         app_temp = ResultFrame(root_temp)
         root_temp.mainloop() 
-        
-        
+    
     # run result frame, and create model data from table data in the last fill at mainframe_table
     # applyFunctionLNP: function processing table data from mainframe
     def eventRunFunction(self, sheet, txt):
         root_temp = Tk()
         root_temp.geometry('300x350+300+300')
-        public_var.result_lnp = self.applyFunctionLNP(sheet,txt)
+        public_var.result_lnp = self.applyFirstDataFunctionLNP(sheet,txt)
         app_temp =ResultFrame(root_temp)
         root_temp.mainloop()
         
