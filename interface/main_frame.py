@@ -8,7 +8,6 @@ import public_var
 import tksheet
 import pandas as pd
 import numpy.matlib
-import time
 
 # Main frame
 class MainFrame(Frame): # main frame
