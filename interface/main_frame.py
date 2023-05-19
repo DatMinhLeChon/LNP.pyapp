@@ -2,7 +2,7 @@ from tkinter.ttk import *
 from tkinter import *
 from interface.configure_frame import ConfigureFrame
 from interface.result_frame import ResultFrame
-from apply_model import applyModelLNP
+from function.apply_model import applyModelLNP
 from functools import partial, update_wrapper
 import public_var
 import tksheet
