@@ -7,7 +7,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
 # create file handler which logs even debug messages
-file_handler = logging.FileHandler('test/test.log')
+file_handler = logging.FileHandler('test/functional_test/test.log')
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
