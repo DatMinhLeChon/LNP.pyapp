@@ -55,7 +55,6 @@ class TestCase:
     def applyTestCMD(self):
         for (item, index) in zip(self.test_list, range(len(self.test_list))):
             try:
-                
                 test_apply = (item.obj, item.lhs_ineq , item.rhs_ineq, item.lhs_eq, item.rhs_eq)
                 if test_apply:
                     logger.info("Test "+ str(index) + " pass")
