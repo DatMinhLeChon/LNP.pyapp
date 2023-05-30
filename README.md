@@ -1,5 +1,5 @@
 # Linear_programing.pyapp
-Python application development
+Requirement
 *API
 - tkinter
 - tksheet
