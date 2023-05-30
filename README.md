@@ -16,8 +16,8 @@ Python application development
 Dowload project run this command in LNP.pyapp project : 
  "python main.py"
 ## Application
-Open folder "app/window/application" with window
-Open folder "app/macos/application" with macos
+- Open folder "app/window/application" for window
+- Open folder "app/macos/application" for macos
 
 
  
