@@ -12,8 +12,14 @@ Python application development
 *tkinter
 - link: https://docs.python.org/3/library/tkinter.html
 # Running
-run this command in LNP.pyapp project : 
+## Project runing with local environment
+Dowload project run this command in LNP.pyapp project : 
  "python main.py"
+## Application
+Open folder "app/window/application" with window
+Open folder "app/macos/application" with macos
+
+
  
 
 
