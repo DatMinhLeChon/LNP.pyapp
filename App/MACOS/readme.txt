@@ -1,0 +1,1 @@
+click application file for open app
