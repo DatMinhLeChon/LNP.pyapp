@@ -22,7 +22,6 @@ Requirement
 - Open folder "app/macos/application" for macos
 
 
-
  
 
 
