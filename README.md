@@ -13,8 +13,10 @@ Requirement
 - link: https://docs.python.org/3/library/tkinter.html
 # Running
 ## Project runing with local environment
-Dowload project run this command in LNP.pyapp project : 
- "python main.py"
+* Draw source of project is folder "src"
+* Dowload project run this command in LNP.pyapp project : 
+  - "python src/main.py" 
+  - Or "python3 src/main.py"
 ## Application
 - Open folder "app/window/application" for window
 - Open folder "app/macos/application" for macos
