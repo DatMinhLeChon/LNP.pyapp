@@ -44,4 +44,4 @@ if __name__ == "__main__":
     app =ResultFrame(root)
     root.mainloop()
 
-## python3 interface/result_frame.py
+## python3 interface/result_frame.pyg

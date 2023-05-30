@@ -20,6 +20,7 @@ Dowload project run this command in LNP.pyapp project :
 - Open folder "app/macos/application" for macos
 
 
+
  
 
 
