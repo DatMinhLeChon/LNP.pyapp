@@ -1,3 +1,0 @@
-([('main',
-   '/Users/lechonminhdat/Desktop/Workspace/LNP.pyapp/src/dist/main',
-   'EXECUTABLE')],)
